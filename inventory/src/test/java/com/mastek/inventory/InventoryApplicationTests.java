@@ -111,4 +111,7 @@ class InventoryApplicationTests {
 		Products pro=invSer1.assignProductToCategory(2, 60);
 		assertNotNull(pro.getCurrentCategory(),"failed");
 	}
+	
+
+	
 }

@@ -9,12 +9,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.mastek.hrapp.dao.DepartmentJPADAO;
 import com.mastek.hrapp.dao.EmployeeJPADAO;
+import com.mastek.hrapp.dao.JobPositionsDAO;
+import com.mastek.hrapp.dao.PaymentJPADAO;
 import com.mastek.hrapp.dao.ProjectJPADAO;
+import com.mastek.hrapp.entities.CardPayment;
+import com.mastek.hrapp.entities.ChequePayment;
 import com.mastek.hrapp.entities.Department;
 import com.mastek.hrapp.entities.Designation;
 import com.mastek.hrapp.entities.Employee;
+import com.mastek.hrapp.entities.JobPositions;
+import com.mastek.hrapp.entities.Payment;
 import com.mastek.hrapp.entities.Project;
 import com.mastek.hrapp.services.EmployeeService;
+
+import net.bytebuddy.agent.ByteBuddyAgent.AttachmentProvider.ForEmulatedAttachment;
 
 @SpringBootTest // Make sure ya don't leave a line below this 
 class HrappApplicationTests {
@@ -33,6 +41,89 @@ class HrappApplicationTests {
 
 	@Autowired
 	ProjectJPADAO projDAO;
+
+	@Autowired
+	PaymentJPADAO paymentDAO;
+	
+	@Autowired
+	JobPositionsDAO jobDAO;
+	
+	//@Test
+	void testAddJobPosition() {
+		JobPositions job = new JobPositions();
+		job.setJobId(162);
+		job.setClientName("Example");
+		job.setLocation("Leeds");
+		job.setNumberOfPositions(2);
+		
+		job=jobDAO.save(job);
+		assertNotNull(job,"failed");
+	}
+
+	@Test
+	void testListPositions() {
+		
+		for (JobPositions job : jobDAO.findAll()) {
+			System.out.println(job);
+		}
+	}
+
+	
+
+	@Test
+	void testFindBySalary() {
+		double minS=20.0;
+		double maxS=5000.0;
+		Iterable<Employee> emps = empDAO.findBySalary(minS,maxS);
+		for (Employee employee : emps) {
+			System.out.println(employee);
+		}
+	}
+
+	@Test
+	void testFindEmployeeByDesignation() {
+		Iterable<Employee> emps = empDAO.findByDesignation(Designation.ARCHITECT);
+		for (Employee employee : emps) {
+			System.out.println(employee);
+		}
+	}
+
+
+
+	@Test
+	void testCashPaymentAdd() {
+		Payment cashP = new Payment();
+		cashP.setAmount(100);
+
+		cashP = paymentDAO.save(cashP);
+		System.out.println(cashP);
+		assertNotNull(cashP,"Cash Payment Not Saved");
+	}
+
+	@Test
+	void testAddCardPayment() {
+		CardPayment cardP = new CardPayment();
+		cardP.setAmount(50);
+		cardP.setCardNumber(2937927927l);
+		cardP.setCardService("VISA");
+
+		cardP = paymentDAO.save(cardP);
+		System.out.println(cardP);
+		assertNotNull(cardP,"Card not worked");
+
+	}
+
+	@Test
+	void testChequePayment() {
+		ChequePayment chequeP = new ChequePayment();
+		chequeP.setAmount(60);
+		chequeP.setChequeNumber(2637);
+		chequeP.setBankName("Natwest");
+
+		chequeP = paymentDAO.save(chequeP);
+		System.out.println(chequeP);
+		assertNotNull(chequeP,"Cheque failed");
+	}
 
 	@Test
 	void testEmployeeServiceExampleMethod() {
@@ -98,7 +189,7 @@ class HrappApplicationTests {
 		assertNotNull(proj);
 
 	}
-	
+
 	@Test
 	void testListProjects(){
 		Iterable<Project> pros = projDAO.findAll();
@@ -107,41 +198,52 @@ class HrappApplicationTests {
 			System.out.println(project);
 		}
 	}
-	
-	
-	
+
+
+
 	@Test
 	void testUpdateEmployees() {
 		Employee emp = empDAO.findById(2).get();
-		int i = 0;
 		System.out.println("Employee Fetched: "+emp);
 		emp.setSalary(emp.getSalary()+5);
-		emp.setName("Updated"+(++i));
+		emp.setName("Updated");
 		emp = empDAO.save(emp);
 		System.out.println("Updated Employee: "+emp);
 	}
 
-	
+
 	@Test
 	void testDeleteEmployeeByID() {
 		//empDAO.deleteById(35); // remember to change this number everytime you do this 
 		//empDAO.delete(emp); this deletes by object
 	}
-	
+
 	@Test
 	void testAssignEmployeeToDepartment() {
 		Employee emp = empSvc.assignEmployeeToDepartment(2,9);
 		assertNotNull(emp.getCurrentDepartment(),"Department not assigned");
 	}
-	
-	
+
+
 	@Test
 	void testAssignExployeeToProject() {
 		Employee emp = empSvc.assignEmployeeToProject(2,7);
 		assertTrue(emp.getProjectsAssigned().size()>0);
 	}
-	
-	
-	
-	
+
+
+	@Test
+	void testAssignApplyForJobPositions() {
+		JobPositions job = empSvc.applyForPosition(162, 20);
+		assertNotNull(job,"Not worked");
+		for (Employee applicant : job.getApplicants()) {
+			System.out.println(applicant);
+		}
+	}
+
+
+
+
+
+
 }
