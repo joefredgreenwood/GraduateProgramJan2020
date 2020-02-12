@@ -14,12 +14,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="JPA_BANK_CUSTOMERS")
+@Table(name="JPA_BANK_ACCOUNTS")
 public class Account {
 
 	int accountNumber;
 	String sortCode;
-	int balance;
+	double balance;
 	
 	public Account() {
 		// TODO Auto-generated constructor stub
@@ -63,10 +63,10 @@ public class Account {
 	public void setSortCode(String sortCode) {
 		this.sortCode = sortCode;
 	}
-	public int getBalance() {
+	public double getBalance() {
 		return balance;
 	}
-	public void setBalance(int balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 	@Override

@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 import com.mastek.bank.dao.AccountDAO;
 import com.mastek.bank.dao.CustomersDAO;
 import com.mastek.bank.dao.TransactionsDAO;
+import com.mastek.bank.dao.TransferDAO;
 import com.mastek.bank.entities.Account;
 import com.mastek.bank.entities.Customers;
 import com.mastek.bank.entities.Transaction;
+import com.mastek.bank.entities.Transfer;
 
 @Component
 public class BankServices {
@@ -23,6 +25,9 @@ public class BankServices {
 	
 	@Autowired
 	AccountDAO accDAO;
+	
+	@Autowired
+	TransferDAO trfDAO;
 
 	
 	@Transactional
@@ -54,5 +59,16 @@ public class BankServices {
 		return cus;
 				
 				
+	}
+	
+	@Transactional
+	public Transfer assignnTransferToTransaction(int  trfID, int traId) {
+		Transfer trf = trfDAO.findById(trfID).get();
+		Transaction tra = tranDAO.findById(traId).get();
+		
+		trf.getTransactionLink().add(tra);
+		trf = trfDAO.save(trf);		
+		
+		return trf;
 	}
 }
