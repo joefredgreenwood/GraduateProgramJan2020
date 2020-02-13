@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.mastek.hrapp.apis.EmployeeAPI;
 import com.mastek.hrapp.dao.DepartmentJPADAO;
 import com.mastek.hrapp.dao.EmployeeJPADAO;
 import com.mastek.hrapp.dao.JobPositionsDAO;
@@ -20,7 +21,7 @@ import com.mastek.hrapp.entities.Project;
 
 @Component // Marks the class as bean to be created
 @Scope("singleton") // This means it creates a new object each time it is called
-public class EmployeeService {
+public class EmployeeService implements EmployeeAPI{
 
 	String exampleProperty;
 	
@@ -106,6 +107,23 @@ public JobPositions applyForPosition(int jobId,int empno) {
 	
 	job=jobDAO.save(job);
 	return job;
+}
+
+@Override
+public Iterable<Employee> listAllEmployees() {
+	System.out.println("Listing all employees");
+	return empDAO.findAll();
+}
+
+@Override
+public Employee findByEmpno(int empno) {
+	return empDAO.findById(empno).get();
+}
+
+@Override
+public Employee registerNewEmployee(Employee newEmployee) {
+	newEmployee = empDAO.save(newEmployee);
+	return newEmployee;
 }
 
 	

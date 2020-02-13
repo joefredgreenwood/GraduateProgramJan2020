@@ -19,9 +19,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.ws.rs.FormParam;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.springframework.data.annotation.Transient;
 
+@XmlRootElement // declares the entity to be transformed to xml or json. It does work for JSON as well
 @Entity // declares the class as entity, to be managed by JPA
 @Table(name="JPA_Employees") // Good practice to have JPA at the start, this will declare the name 
 @EntityListeners({EmployeeListener.class}) // This calls the appropriate listener event method
@@ -37,16 +41,24 @@ public class Employee {
 
 
 	int empno;
+	
+	@FormParam("name")	
 	String name;
+	
+	@FormParam("salary")
 	double salary;
+	
+	@FormParam("designation")
 	Designation designation;
 
+	
 	Department currentDepartment;
 
 
 	@ManyToOne //1 employee is associated with one of the many departments
 	@JoinColumn(name="fk_department_number")
 	@Transient
+	@XmlTransient 
 	public Department getCurrentDepartment() {
 		return currentDepartment;
 	}
@@ -64,6 +76,7 @@ public class Employee {
 	joinColumns= {@JoinColumn(name="fk_empno")}, // foreign key column for current class
 	inverseJoinColumns= {@JoinColumn(name="fk_projectId")}) // foreign key column for collection
 	@Transient
+	@XmlTransient // ignores the association property when shared via service
 	public Set<Project> getProjectsAssigned() {
 		return projectsAssigned;
 	}
