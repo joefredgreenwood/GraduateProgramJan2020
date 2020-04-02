@@ -1,64 +1,64 @@
-package com.mastek.hrapp;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import com.mastek.hrapp.dao.DepartmentJPADAO;
-import com.mastek.hrapp.dao.EmployeeJPADAO;
-import com.mastek.hrapp.dao.JobPositionsDAO;
-import com.mastek.hrapp.dao.PaymentJPADAO;
-import com.mastek.hrapp.dao.ProjectJPADAO;
-import com.mastek.hrapp.entities.CardPayment;
-import com.mastek.hrapp.entities.ChequePayment;
-import com.mastek.hrapp.entities.Department;
-import com.mastek.hrapp.entities.Designation;
-import com.mastek.hrapp.entities.Employee;
-import com.mastek.hrapp.entities.JobPositions;
-import com.mastek.hrapp.entities.Payment;
-import com.mastek.hrapp.entities.Project;
-import com.mastek.hrapp.services.EmployeeService;
-
-import net.bytebuddy.agent.ByteBuddyAgent.AttachmentProvider.ForEmulatedAttachment;
-
-@SpringBootTest // Make sure ya don't leave a line below this 
-class HrappApplicationTests {
-
-	@Autowired // Spring will provide the object using the IOC
-	EmployeeService empSvc;
-
-	@Autowired
-	EmployeeService empSvc1;
-
-	@Autowired
-	EmployeeJPADAO empDAO;
-
-	@Autowired 
-	DepartmentJPADAO depDao;
-
-	@Autowired
-	ProjectJPADAO projDAO;
-
-	@Autowired
-	PaymentJPADAO paymentDAO;
-	
-	@Autowired
-	JobPositionsDAO jobDAO;
-	
-	@Test
-	void testAddJobPosition() {
-		JobPositions job = new JobPositions();
-		job.setJobId(162);
-		job.setClientName("Example");
-		job.setLocation("Leeds");
-		job.setNumberOfPositions(2);
-		
-		job=jobDAO.save(job);
-		assertNotNull(job,"failed");
-	}
+//package com.mastek.hrapp;
+//
+//import static org.junit.jupiter.api.Assertions.assertNotNull;
+//import static org.junit.jupiter.api.Assertions.assertTrue;
+//
+//import org.junit.jupiter.api.Test;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.context.SpringBootTest;
+//
+//import com.mastek.hrapp.dao.DepartmentJPADAO;
+//import com.mastek.hrapp.dao.EmployeeJPADAO;
+//import com.mastek.hrapp.dao.JobPositionsDAO;
+//import com.mastek.hrapp.dao.PaymentJPADAO;
+//import com.mastek.hrapp.dao.ProjectJPADAO;
+//import com.mastek.hrapp.entities.CardPayment;
+//import com.mastek.hrapp.entities.ChequePayment;
+//import com.mastek.hrapp.entities.Department;
+//import com.mastek.hrapp.entities.Designation;
+//import com.mastek.hrapp.entities.Employee;
+//import com.mastek.hrapp.entities.JobPositions;
+//import com.mastek.hrapp.entities.Payment;
+//import com.mastek.hrapp.entities.Project;
+//import com.mastek.hrapp.services.EmployeeService;
+//
+//import net.bytebuddy.agent.ByteBuddyAgent.AttachmentProvider.ForEmulatedAttachment;
+//
+//@SpringBootTest // Make sure ya don't leave a line below this 
+//class HrappApplicationTests {
+//
+//	@Autowired // Spring will provide the object using the IOC
+//	EmployeeService empSvc;
+//
+//	@Autowired
+//	EmployeeService empSvc1;
+//
+//	@Autowired
+//	EmployeeJPADAO empDAO;
+//
+//	@Autowired 
+//	DepartmentJPADAO depDao;
+//
+//	@Autowired
+//	ProjectJPADAO projDAO;
+//
+//	@Autowired
+//	PaymentJPADAO paymentDAO;
+//	
+//	@Autowired
+//	JobPositionsDAO jobDAO;
+//	
+//	@Test
+//	void testAddJobPosition() {
+//		JobPositions job = new JobPositions();
+//		job.setJobId(162);
+//		job.setClientName("Example");
+//		job.setLocation("Leeds");
+//		job.setNumberOfPositions(2);
+//		
+//		job=jobDAO.save(job);
+//		assertNotNull(job,"failed");
+//	}
 //
 //	@Test
 //	void testListPositions() {
