@@ -11,7 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.ws.rs.FormParam;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
 @Entity
 @Table(name="jpa_departments")
 public class Department {
@@ -19,7 +23,11 @@ public class Department {
 
 
 	private int depno;
+	
+	@FormParam("name")
 	private String name;
+	
+	@FormParam("location")
 	private String location;
 	
 
@@ -27,6 +35,7 @@ public class Department {
 	
 	//Associates the many entity using collection with cascade enabled
 	@OneToMany(mappedBy="currentDepartment", cascade=CascadeType.ALL)	
+	@XmlTransient
 	public Set<Employee> getTeam() {
 		return team;
 	}

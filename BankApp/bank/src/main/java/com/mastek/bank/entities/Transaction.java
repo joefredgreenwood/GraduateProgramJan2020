@@ -8,12 +8,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.ws.rs.FormParam;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name="JPA_BANK_TRANSACTIONS")
 public class Transaction {
 
 	int transactionId;
+	
+	@FormParam("transactionValue")
 	double transactionValue;
 	
 	public Transaction() {
@@ -25,6 +29,7 @@ public class Transaction {
 	
 	@ManyToOne
 	@JoinColumn(name="fk_account_number")
+	@XmlTransient
 	public Account getLinkedAccount() {
 		return linkedAccount;
 	}

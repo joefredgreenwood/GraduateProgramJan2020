@@ -9,19 +9,28 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.ws.rs.FormParam;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
 @Entity
 @Table(name="JPA_Projects")
 public class Project {
 	
 	
 	private int projectId;
+	
+	@FormParam("name")
 	private String name;
-	private String customer_name;
+	
+	@FormParam("customerName")
+	private String customerName;
 	
 	Set<Employee> projectTeam = new HashSet<>();
 	
 	@ManyToMany(mappedBy="projectsAssigned")
+	@XmlTransient
 	public Set<Employee> getProjectTeam() {
 		return projectTeam;
 	}
@@ -52,12 +61,12 @@ public class Project {
 		this.name = name;
 	}
 
-	public String getCustomer_name() {
-		return customer_name;
+	public String getCustomerName() {
+		return customerName;
 	}
 
-	public void setCustomer_name(String customer_name) {
-		this.customer_name = customer_name;
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 	
 	@Override
@@ -84,7 +93,7 @@ public class Project {
 
 	@Override
 	public String toString() {
-		return "Project [projectId=" + projectId + ", name=" + name + ", customer_name=" + customer_name + "]";
+		return "Project [projectId=" + projectId + ", name=" + name + ", customer_name=" + customerName + "]";
 	}
 	
 

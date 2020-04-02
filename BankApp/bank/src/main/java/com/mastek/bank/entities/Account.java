@@ -12,13 +12,21 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.ws.rs.FormParam;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement // declares the entity to be transformed to xml or json. It does work for JSON as well
 @Entity
 @Table(name="JPA_BANK_ACCOUNTS")
 public class Account {
 
 	int accountNumber;
+	
+	@FormParam("sortCode")
 	String sortCode;
+	
+	@FormParam("balance")
 	double balance;
 	
 	public Account() {
@@ -31,6 +39,7 @@ public class Account {
 	
 	
 	@ManyToMany(mappedBy="accountAssigned")
+	@XmlTransient
 	public Set<Customers> getCustomerAssigned() {
 		return customerAssigned;
 	}
@@ -43,6 +52,7 @@ public class Account {
 	
 	
 	@OneToMany(mappedBy="linkedAccount",cascade=CascadeType.ALL)
+	@XmlTransient
 	public Set<Transaction> getTransactionHistory() {
 		return transactionHistory;
 	}
@@ -51,7 +61,7 @@ public class Account {
 	}
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	public int getAccountNumber() {
+		public int getAccountNumber() {
 		return accountNumber;
 	}
 	public void setAccountNumber(int accountNumber) {

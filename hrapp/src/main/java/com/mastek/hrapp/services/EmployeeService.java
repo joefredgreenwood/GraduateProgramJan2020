@@ -1,5 +1,7 @@
 package com.mastek.hrapp.services;
 
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.transaction.Transactional;
@@ -9,7 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.mastek.hrapp.apis.DepartmentAPI;
 import com.mastek.hrapp.apis.EmployeeAPI;
+import com.mastek.hrapp.apis.ProjectAPI;
 import com.mastek.hrapp.dao.DepartmentJPADAO;
 import com.mastek.hrapp.dao.EmployeeJPADAO;
 import com.mastek.hrapp.dao.JobPositionsDAO;
@@ -21,7 +25,7 @@ import com.mastek.hrapp.entities.Project;
 
 @Component // Marks the class as bean to be created
 @Scope("singleton") // This means it creates a new object each time it is called
-public class EmployeeService implements EmployeeAPI{
+public class EmployeeService implements EmployeeAPI,ProjectAPI,DepartmentAPI{
 
 	String exampleProperty;
 	
@@ -126,5 +130,57 @@ public Employee registerNewEmployee(Employee newEmployee) {
 	return newEmployee;
 }
 
+@Override
+public Iterable<Department> listAllDepartments() {
+	return depDAO.findAll();
+	
+}
+
+@Override
+public Department findByDepno(int depno) {
+	return depDAO.findById(depno).get();
+}
+
+@Override
+public Department registerNewDepartment(Department newDepartment) {
+	newDepartment = depDAO.save(newDepartment);
+	return newDepartment;
+}
+
+@Override
+public Iterable<Project> listAllProjects() {
+	return projDAO.findAll();
+}
+
+@Override
+public Project findByProjectId(int projectId) {
+	return projDAO.findById(projectId).get();
+}
+
+@Override
+public Project registerNewProject(Project newProject) {
+newProject = projDAO.save(newProject);
+	return newProject;
+}
+@Override
+@Transactional //to fetch all collections
+public Set<Project> getEmployeeProjects(int empno) {
+    Employee currentEmp = empDAO.findById(empno).get();
+    int count = currentEmp.getProjectsAssigned().size();
+    System.out.println(count +" Projects found");
+    
+    Set<Project> projects = currentEmp.getProjectsAssigned();
+    return projects;
+}
+
+
+
+@Override
+@Transactional
+public Project registerProjectForEmployee(int empno, Project newProject) {
+    newProject = projDAO.save(newProject);
+    assignEmployeeToProject(empno, newProject.getProjectId());
+    return newProject;
+}
 	
 }

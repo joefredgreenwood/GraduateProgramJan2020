@@ -13,13 +13,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.ws.rs.FormParam;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name="JPA_CUSTOMERS_BANK")
+@XmlRootElement
 public class Customers {
 
 	int custNo;
+	
+	@FormParam("name")
 	String name;
+	
+	@FormParam("address")
 	String address;
 	
 	public Customers() {
@@ -32,6 +40,7 @@ public class Customers {
 	@JoinTable(name="JPA_ACCOUNT_CUSTOMER",// provide the join table name
 	joinColumns= {@JoinColumn(name="fk_customer_id")}, // foreign key column for current class
 	inverseJoinColumns= {@JoinColumn(name="fk_accountId")}) // foreign key column for collection
+	@XmlTransient
 	public Set<Account> getAccountAssigned() {
 		return accountAssigned;
 	}

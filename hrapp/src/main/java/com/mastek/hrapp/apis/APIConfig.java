@@ -20,6 +20,7 @@ public class APIConfig  extends ResourceConfig{   // configure the service class
 	
 		// TODO Auto-generated constructor stub
 		register(EmployeeService.class);
+		register(CORSFilter.class);
 	}
 
 }
